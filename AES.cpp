@@ -16,7 +16,18 @@ std::vector<bit32> split128to32(bit128 k) {
 
 
 bit32 rotWord(bit32 w) { //wrong
-	return { w[1], w[2], w[3], w[0] };
+
+	std::string result = "";
+
+	std::string temp = w.to_string();
+
+	for (int i = 1; i < 4; ++i) {
+		result += temp.substr(i, 8);
+	}
+	result += temp.substr(0, 8);
+
+	return bit32(result);
+
 }
 
 bit32 subWord(bit32 w) {
