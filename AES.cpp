@@ -1,5 +1,6 @@
 #include "AES.h"
 
+//left to do is add Rcon and the AES.
 
 std::vector<bit32> split128to32(bit128 k) {
 	std::vector<bit32> w;
