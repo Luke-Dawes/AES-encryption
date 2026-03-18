@@ -20,6 +20,18 @@ std::vector<bit128> keySchedule(bit128 k) {
 
 	std::vector<bit32> w = split128to32(k);
 
+	for (int i = 3; i < 43; ++i) {
+		bit32 temp = w[i - 1];
 
+		if (i % 4 != 0) {
+
+			bit32 newKey = w[i - 4] ^ temp;
+			w.push_back(newKey);
+		}
+		else {
+			
+			bit32 newKey = subWord(rotWord(temp)) ^ Rcon(i / 4);
+		}
+	}
 
 }
