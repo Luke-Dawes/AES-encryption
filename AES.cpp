@@ -7,8 +7,8 @@ std::vector<bit32> split128to32(bit128 k) {
 	bit128 mask(0xFFFFFFFF);
 
 	for (int i = 0; i < 4; ++i) {
-		unsigned long chunk = ((k >> (i * 32)) & mask).to_ulong();
-		w.push_back(chunk);
+		unsigned long chunk = (k >> (32 * (3 - i))).to_ulong();
+		w.push_back(bit32(chunk));
 	}
 	return w;
 }
@@ -27,18 +27,16 @@ std::vector<bit128> keySchedule(bit128 k) {
 
 	std::vector<bit32> w = split128to32(k);
 
-	for (int i = 3; i < 43; ++i) {
+	for (int i = 4; i < 44; ++i) {
 		bit32 temp = w[i - 1];
 
-		if (i % 4 != 0) {
+		if (i % 4 == 0) {
 
-			bit32 newKey = w[i - 4] ^ temp;
-			w.push_back(newKey);
+			temp = subWord(rotWord(temp)) ^ Rcon[i / 4];
+		
 		}
-		else {
-			
-			bit32 newKey = rotWord(subWord(temp)) ^ Rcon(i / 4);
-		}
+
+		w.push_back(w[i - 4] ^ temp);
 	}
 
 }
