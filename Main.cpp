@@ -21,6 +21,8 @@ std::vector<bit32> split128to32(bit128 k) {
 
 std::vector<bit128> keySchedule(bit128 k) {
 
+	std::vector<bit32> w = split128to32(k);
+
 
 
 }
