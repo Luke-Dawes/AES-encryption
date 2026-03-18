@@ -4,19 +4,23 @@
 std::vector<bit32> split128to32(bit128 k) {
 	std::vector<bit32> w;
 
+	bit128 mask(0xFFFFFFFF);
 
-	for (int j = 0; j < 4; ++j) {
-		bit32 ans = 0;
-		for (int i = 0; i < 32; ++i) {
-			k.test(j * 32 + i) ? ans.set(i) : ans.reset(i);
-		}
-		w.push_back(ans);
+	for (int i = 0; i < 4; ++i) {
+		unsigned long chunk = ((k >> (i * 32)) & mask).to_ulong();
+		w.push_back(chunk);
 	}
 	return w;
 }
 
-std::vector<bit32> rotWord(std::vector<bit32> w) {
+
+
+bit32 rotWord(bit32 w) { //wrong
 	return { w[1], w[2], w[3], w[0] };
+}
+
+bit32 subWord(bit32 w) {
+
 }
 
 std::vector<bit128> keySchedule(bit128 k) {
@@ -33,7 +37,7 @@ std::vector<bit128> keySchedule(bit128 k) {
 		}
 		else {
 			
-			bit32 newKey = subWord(rotWord(temp)) ^ Rcon(i / 4);
+			bit32 newKey = rotWord(subWord(temp)) ^ Rcon(i / 4);
 		}
 	}
 

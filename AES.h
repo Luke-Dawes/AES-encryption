@@ -14,7 +14,7 @@ typedef std::bitset<32> bit32;
 std::vector<bit128> keySchedule(bit128 key);
 std::vector<bit32> split128to32(bit128 key);
 std::vector<bit32> rotWord(std::vector<bit32> w);
-std::vector<bit32> subWord(std::vector<bit32> w);
+bit32 subWord(bit32 w);
 bit32 SBox(bit32 w);
 
 //calculate AES
