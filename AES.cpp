@@ -15,6 +15,9 @@ std::vector<bit32> split128to32(bit128 k) {
 	return w;
 }
 
+std::vector<bit32> rotWord(std::vector<bit32> w) {
+	return { w[1], w[2], w[3], w[0] };
+}
 
 std::vector<bit128> keySchedule(bit128 k) {
 
