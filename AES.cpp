@@ -33,7 +33,16 @@ bit32 rotWord(bit32 w) {
 }
 
 bit32 subWord(bit32 w) {
+	bit32 result(0);
 
+	for (int i = 0; i < 4; ++i) {
+		unsigned char byte = (w >> (i * 8)).to_ulong() & 0xFF;
+
+		unsigned char substituted = sbox(byte);
+
+		result |= (bit32(substituted) << (i * 8));
+	}
+	return result;
 }
 
 std::vector<bit128> keySchedule(bit128 k) {
@@ -51,5 +60,7 @@ std::vector<bit128> keySchedule(bit128 k) {
 
 		w.push_back(w[i - 4] ^ temp);
 	}
+
+	return join32to128(w);
 	
 }
