@@ -1,14 +1,19 @@
 #include "KeySchedule.h"
+#include <iostream>
+#include <iomanip>
 
 std::vector<bit32> split128to32(bit128 k) {
 	std::vector<bit32> w;
 
-	bit128 mask(0xFFFFFFFF);
-
 	for (int i = 0; i < 4; ++i) {
-		unsigned long chunk = (k >> (32 * (3 - i))).to_ulong();
-		w.push_back(bit32(chunk));
+		bit32 chunk;
+		for (int j = 0; j < 32; ++j) {
+			// Pull bit from k and set it in chunk
+			chunk[j] = k[(32 * (3 - i)) + j];
+		}
+		w.push_back(chunk);
 	}
+
 	return w;
 }
 
@@ -45,21 +50,30 @@ bit32 subWord(bit32 w) {
 }
 
 std::vector<bit128> keySchedule(bit128 k) {
-
 	std::vector<bit32> w = split128to32(k);
 
 	for (int i = 4; i < 44; ++i) {
 		bit32 temp = w[i - 1];
 
 		if (i % 4 == 0) {
-
-			temp = subWord(rotWord(temp)) ^ Rcon[i / 4];
-		
+			temp = subWord(rotWord(temp)) ^ bit32(Rcon[(i / 4) - 1]);
 		}
 
 		w.push_back(w[i - 4] ^ temp);
 	}
+	std::vector<bit128> keys;
+	for (int i = 0; i < 44; i += 4) {
 
-	return join32to128(w);
-	
+		bit128 fullKey(0);
+		for (int j = 0; j < 4; ++j) {
+			unsigned int wordVal = (unsigned int)w[i + j].to_ulong();
+			std::cout << std::hex << std::setw(8) << std::setfill('0') << wordVal << " ";
+
+			fullKey |= (bit128(wordVal) << (32 * (3 - j)));
+		}
+		std::cout << "\n";
+		keys.push_back(fullKey);
+	}
+
+	return keys;
 }
