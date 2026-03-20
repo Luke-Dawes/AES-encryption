@@ -39,11 +39,11 @@ bit32 subWord(bit32 w) {
 	bit32 result(0);
 
 	for (int i = 0; i < 4; ++i) {
-		unsigned char byte = (w >> (i * 8)).to_ulong() & 0xFF;
+		unsigned char byte = (w >> ( 24 - (i * 8))).to_ulong() & 0xFF;
 
 		unsigned char substituted = sbox[byte];
 
-		result |= (bit32(substituted) << (i * 8));
+		result |= (bit32(substituted) << (24 - (i * 8)));
 	}
 	return result;
 }

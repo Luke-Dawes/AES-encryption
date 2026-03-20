@@ -28,11 +28,9 @@ bit128 subBytes(bit128 state) {
 	bit128 result;
 
 	for (int i = 0; i < 16; ++i) {
-		unsigned char byte = (state >> (static_cast<size_t>(i) * 8)).to_ulong() & 0xFF;
-
+		unsigned char byte = (state >> (120 - (i * 8))).to_ulong() & 0xFF;
 		unsigned char substituted = sbox[byte];
-
-		result |= (bit128(substituted) << (static_cast<size_t>(i) * 8));
+		result |= (bit128(substituted) << (120 - (i * 8)));
 	}
 	return result;
 }
