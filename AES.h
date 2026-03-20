@@ -15,6 +15,8 @@ std::vector<bit8> split32to8(bit32 k);
 
 unsigned char xtime(unsigned char x); //ai
 
+bit128 stringtobit128(const std::string& plaintext); //ai
+
 
 const int fieldMatrix[4][4] =
 { {2,3,1,1},

@@ -22,13 +22,30 @@ unsigned char xtime(unsigned char x) { //ai for maths
 	return ((x << 1) ^ (((x >> 7) & 1) * 0x1B)) & 0xFF;
 }
 
+bit128 stringtobit128(const std::string& plaintext) {
+	std::bitset<128> bits;
+	// Iterate through up to 16 characters (128 bits)
+	for (size_t i = 0; i < plaintext.size() && i < 16; ++i) {
+		unsigned char c = plaintext[i];
+		for (int j = 0; j < 8; ++j) {
+			// Set bit based on character's binary value
+			// (15 - i) * 8 places characters in big-endian order
+			if ((c >> j) & 1) {
+				bits.set((15 - i) * 8 + j);
+			}
+		}
+	}
+	return bits;
+}
+
+
 
 bit128 subBytes(bit128 state) {
 
 	bit128 result;
 
 	for (int i = 0; i < 16; ++i) {
-		unsigned char byte = (state >> (120 - (i * 8))).to_ulong() & 0xFF;
+		unsigned char byte = (unsigned char)((state >> (120 - (i * 8))) & bit128(0xFF)).to_ulong();
 		unsigned char substituted = sbox[byte];
 		result |= (bit128(substituted) << (120 - (i * 8)));
 	}

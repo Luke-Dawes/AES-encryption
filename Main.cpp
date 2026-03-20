@@ -1,5 +1,7 @@
 #include "KeySchedule.h"
+#include "AES.h"
 #include <iostream>
+#include <iomanip>
 
 int main() {
 
@@ -11,5 +13,20 @@ int main() {
 
 	//bit128 key(std::string("11000111001011110000110011111110001100001000001000101100110100011111111101001010111100110011111001011111101011011001000100000000"));
 	std::vector<bit128> roundKeys = keySchedule(key);
+
+	std::string plaintext = "Hello, World!123"; //16 bytes = 128 bits
+
+	auto temp = AESEncrypt(stringtobit128(plaintext), roundKeys);
+
+	auto printing = split128to32(temp);
+
+	std::cout << "\n\n";
+
+	for (int j = 0; j < 4; ++j) {
+		unsigned int wordVal = (unsigned int)printing[j].to_ulong();
+		std::cout << std::hex << std::setw(8) << std::setfill('0') << wordVal << " ";
+	}
+	std::cout << "\n";
+
 	return 0;
 }
