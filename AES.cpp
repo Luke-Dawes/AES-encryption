@@ -22,8 +22,8 @@ unsigned char xtime(unsigned char x) { //ai for maths
 	return ((x << 1) ^ (((x >> 7) & 1) * 0x1B)) & 0xFF;
 }
 
-bit128 stringtobit128(const std::string& plaintext) {
-	std::bitset<128> bits;
+bit128 stringtobit128(const std::string& plaintext) { //ai
+	bit128 bits;
 	// Iterate through up to 16 characters (128 bits)
 	for (size_t i = 0; i < plaintext.size() && i < 16; ++i) {
 		unsigned char c = plaintext[i];
