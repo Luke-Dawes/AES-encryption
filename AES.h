@@ -13,6 +13,9 @@ bit32 join8to32(std::vector<bit8> k);
 bit128 join32to128(std::vector<bit32> k);
 std::vector<bit8> split32to8(bit32 k);
 
+unsigned char xtime(unsigned char x); //ai
+
+
 const int fieldMatrix[4][4] =
 { {2,3,1,1},
 { 1,2,3,1},

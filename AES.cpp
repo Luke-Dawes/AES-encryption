@@ -18,6 +18,11 @@ inline void stateXor(bit128& state, bit128& key) {
 	state ^= key;
 }
 
+unsigned char xtime(unsigned char x) { //ai for maths
+	return ((x << 1) ^ (((x >> 7) & 1) * 0x1B)) & 0xFF;
+}
+
+
 bit128 subBytes(bit128 state) {
 
 	bit128 result;
@@ -65,28 +70,28 @@ bit128 shiftRows(bit128 state) {
 	return join32to128(newCols);
 }
 
-bit128 mixColumns(bit128 state) {
-	std::vector<std::vector<bit8> > BrokenDown;
+bit128 mixColumns(bit128 state) { //ai for maths
+	auto cols = split128to32(state);
+	std::vector<bit32> resultCols;
 
 	for (int i = 0; i < 4; i++) {
+		auto bytes = split32to8(cols[i]);
 
-		auto temp = split128to32(state);
+		unsigned char s[4];
+		for (int j = 0; j < 4; ++j) s[j] = (unsigned char)bytes[j].to_ulong();
 
-		BrokenDown.push_back(split32to8(temp[i]));
+		unsigned char r[4];
+		r[0] = xtime(s[0]) ^ (xtime(s[1]) ^ s[1]) ^ s[2] ^ s[3];
+		r[1] = s[0] ^ xtime(s[1]) ^ (xtime(s[2]) ^ s[2]) ^ s[3];
+		r[2] = s[0] ^ s[1] ^ xtime(s[2]) ^ (xtime(s[3]) ^ s[3]);
+		r[3] = (xtime(s[0]) ^ s[0]) ^ s[1] ^ s[2] ^ xtime(s[3]);
+
+		std::vector<bit8> mixedBytes = { bit8(r[0]), bit8(r[1]), bit8(r[2]), bit8(r[3]) };
+		resultCols.push_back(join8to32(mixedBytes));
 	}
 
-	std::vector<bit8> tempCol;
-	for (int i = 0; i < 4; i++) {
-		tempCol.clear();
-		for (int j = 0; j < 4; j++) {
-			tempCol.push_back(BrokenDown[j][i]);
-		}
+	return join32to128(resultCols);
 
-		//logic has to go here about mixing the columns. 
-
-
-	}
-	
 
 }
 
