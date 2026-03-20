@@ -10,7 +10,7 @@ bit128 AESEncrypt(bit128 state, std::vector<bit128>& keys)
 	}
 
 	state = shiftRows(subBytes(state));
-	stateXor(state, keys[11]);
+	stateXor(state, keys[10]);
 	return state;
 }
 
@@ -34,27 +34,35 @@ bit128 subBytes(bit128 state) {
 
 bit128 shiftRows(bit128 state) {
 
-	auto bit32Vector = split128to32(state); //splits into 4 32bit chunks
-	std::vector<bit8> temp;
-	int index;
-	std::vector<bit32> result;
-	result.push_back(bit32Vector[0]);
-	for (int i = 1; i < 4; ++i) {
-		temp.clear();
+	std::vector<bit32> cols = split128to32(state);
 
-		//splits into 4 8bit chunks
-		auto bit8Vector = split32to8(bit32Vector[i]); //splits into 4 8 bit chunks
+	std::vector<std::vector<bit8> > matrix(4);
 
-		index = i;
-
-		for (int j = 0; j < 4; ++j) {
-
-			temp.push_back(bit8Vector[index]); 
-			index = (i + 1) % 4;
-		}
-		result.push_back(join8to32(temp));  //joins 4 8bit chunks into one 32
+	for (int i = 0; i < 4; ++i) {
+		matrix[i] = split32to8(cols[i]);
 	}
-	return join32to128(result); //join 4 32bit chunks into one 128 chunk
+
+	bit8 temp1 = matrix[0][1];
+	matrix[0][1] = matrix[1][1];
+	matrix[1][1] = matrix[2][1];
+	matrix[2][1] = matrix[3][1];
+	matrix[3][1] = temp1;
+
+	std::swap(matrix[0][2], matrix[2][2]);
+	std::swap(matrix[1][2], matrix[3][2]);
+
+	bit8 temp3 = matrix[3][3];
+	matrix[3][3] = matrix[2][3];
+	matrix[2][3] = matrix[1][3];
+	matrix[1][3] = matrix[0][3];
+	matrix[0][3] = temp3;
+
+	std::vector<bit32> newCols(4);
+
+	for (int i = 0; i < 4; ++i) {
+		newCols[i] = join8to32(matrix[i]);
+	}
+	return join32to128(newCols);
 }
 
 bit128 mixColumns(bit128 state) {
