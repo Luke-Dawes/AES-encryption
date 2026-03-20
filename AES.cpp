@@ -67,7 +67,18 @@ bit128 mixColumns(bit128 state) {
 		BrokenDown.push_back(split32to8(temp[i]));
 	}
 
+	std::vector<bit8> tempCol;
+	for (int i = 0; i < 4; i++) {
+		tempCol.clear();
+		for (int j = 0; j < 4; j++) {
+			tempCol.push_back(BrokenDown[j][i]);
+		}
 
+		//logic has to go here about mixing the columns. 
+
+
+	}
+	
 
 }
 

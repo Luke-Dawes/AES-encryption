@@ -12,3 +12,10 @@ bit128 mixColumns(bit128 state);
 bit32 join8to32(std::vector<bit8> k);
 bit128 join32to128(std::vector<bit32> k);
 std::vector<bit8> split32to8(bit32 k);
+
+const int fieldMatrix[4][4] =
+{ {2,3,1,1},
+{ 1,2,3,1},
+{1,1,2,3},
+{3,1,1,2}
+};
