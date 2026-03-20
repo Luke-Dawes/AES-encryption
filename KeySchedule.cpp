@@ -8,7 +8,6 @@ std::vector<bit32> split128to32(bit128 k) {
 	for (int i = 0; i < 4; ++i) {
 		bit32 chunk;
 		for (int j = 0; j < 32; ++j) {
-			// Pull bit from k and set it in chunk
 			chunk[j] = k[(32 * (3 - i)) + j];
 		}
 		w.push_back(chunk);
@@ -17,7 +16,7 @@ std::vector<bit32> split128to32(bit128 k) {
 	return w;
 }
 
-std::vector<bit128> join32to128(std::vector<bit32> w) {
+std::vector<bit128> join32to128Keys(std::vector<bit32> w) { //not used
 	std::vector<bit128> keys;
 
 	for (size_t i = 0; i < 44; i += 4) {
