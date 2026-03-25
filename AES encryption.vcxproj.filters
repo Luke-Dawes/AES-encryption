@@ -24,12 +24,18 @@
     <ClCompile Include="AES.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UnEncryptAES.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KeySchedule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AES.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnEncryptAES.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
