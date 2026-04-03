@@ -31,7 +31,7 @@ int main() {
 
 	auto decrypted = AESDecrypt(temp, roundKeys);
 
-	std::cout << "Decrypted: ", bit128tostring(decrypted);
+	std::cout << "Decrypted: " << bit128tostring(decrypted);
 
 	std::cout << "\n\n";
 
