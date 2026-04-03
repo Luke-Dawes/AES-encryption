@@ -1,5 +1,6 @@
 #include "KeySchedule.h"
 #include "AES.h"
+#include "UnEncryptAES.h"
 #include <iostream>
 #include <iomanip>
 
@@ -26,7 +27,22 @@ int main() {
 		unsigned int wordVal = (unsigned int)printing[j].to_ulong();
 		std::cout << std::hex << std::setw(8) << std::setfill('0') << wordVal << " ";
 	}
-	std::cout << "\n";
+	std::cout << "\n\n";
 
-	return 0;
+	auto decrypted = AESDecrypt(temp, roundKeys);
+
+	std::cout << "Decrypted: ", bit128tostring(decrypted);
+
+	std::cout << "\n\n";
+
+	//sub bytes works
+	std::cout << bit128tostring(invSubBytes(subBytes(stringtobit128(plaintext)))) << "\n";
+
+	//shift rows works
+	std::cout << bit128tostring(invShiftRows(shiftRows(stringtobit128(plaintext)))) << "\n";
+
+	//mix columns works
+	std::cout << bit128tostring(invMixColumns(mixColumns(stringtobit128(plaintext))));
+
+
 }

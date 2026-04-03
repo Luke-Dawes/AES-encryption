@@ -62,26 +62,24 @@ bit128 shiftRows(bit128 state) {
 		matrix[i] = split32to8(cols[i]);
 	}
 
-	bit8 temp1 = matrix[0][1];
-	matrix[0][1] = matrix[1][1];
-	matrix[1][1] = matrix[2][1];
-	matrix[2][1] = matrix[3][1];
-	matrix[3][1] = temp1;
+	bit8 temp1 = matrix[1][0];
+	matrix[1][0] = matrix[1][1];
+	matrix[1][1] = matrix[1][2];
+	matrix[1][2] = matrix[1][3];
+	matrix[1][3] = temp1;
 
-	std::swap(matrix[0][2], matrix[2][2]);
-	std::swap(matrix[1][2], matrix[3][2]);
+	std::swap(matrix[2][0], matrix[2][2]);
+	std::swap(matrix[2][1], matrix[2][3]);
 
 	bit8 temp3 = matrix[3][3];
-	matrix[3][3] = matrix[2][3];
-	matrix[2][3] = matrix[1][3];
-	matrix[1][3] = matrix[0][3];
-	matrix[0][3] = temp3;
+	matrix[3][3] = matrix[3][2];
+	matrix[3][2] = matrix[3][1];
+	matrix[3][1] = matrix[3][0];
+	matrix[3][0] = temp3;
 
 	std::vector<bit32> newCols(4);
+	for (int i = 0; i < 4; ++i) newCols[i] = join8to32(matrix[i]);
 
-	for (int i = 0; i < 4; ++i) {
-		newCols[i] = join8to32(matrix[i]);
-	}
 	return join32to128(newCols);
 }
 
